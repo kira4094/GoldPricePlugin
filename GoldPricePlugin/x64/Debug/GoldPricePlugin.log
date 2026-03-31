@@ -1,0 +1,28 @@
+﻿  GoldPricePlugin.cpp
+D:\DLL\GoldPricePlugin\GoldPricePlugin.cpp(53,10): error C2065: “PI_NAME”: 未声明的标识符
+  (编译源文件“/GoldPricePlugin.cpp”)
+  
+D:\DLL\GoldPricePlugin\GoldPricePlugin.cpp(54,10): error C2065: “PI_DESCRIPTION”: 未声明的标识符
+  (编译源文件“/GoldPricePlugin.cpp”)
+  
+D:\DLL\GoldPricePlugin\GoldPricePlugin.cpp(55,10): error C2065: “PI_AUTHOR”: 未声明的标识符
+  (编译源文件“/GoldPricePlugin.cpp”)
+  
+D:\DLL\GoldPricePlugin\GoldPricePlugin.cpp(56,10): error C2065: “PI_VERSION”: 未声明的标识符
+  (编译源文件“/GoldPricePlugin.cpp”)
+  
+D:\DLL\GoldPricePlugin\GoldPricePlugin.cpp(53,5): error C2051: case 表达式不是常量
+  (编译源文件“/GoldPricePlugin.cpp”)
+  
+D:\DLL\GoldPricePlugin\GoldPricePlugin.cpp(54,5): error C2051: case 表达式不是常量
+  (编译源文件“/GoldPricePlugin.cpp”)
+  
+D:\DLL\GoldPricePlugin\GoldPricePlugin.cpp(55,5): error C2051: case 表达式不是常量
+  (编译源文件“/GoldPricePlugin.cpp”)
+  
+D:\DLL\GoldPricePlugin\GoldPricePlugin.cpp(56,5): error C2051: case 表达式不是常量
+  (编译源文件“/GoldPricePlugin.cpp”)
+  
+D:\DLL\GoldPricePlugin\GoldPricePlugin.cpp(58,5): warning C4065: switch 语句包含“default”但是未包含“case”标签
+  (编译源文件“/GoldPricePlugin.cpp”)
+  
