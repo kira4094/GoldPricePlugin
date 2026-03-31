@@ -43,7 +43,7 @@
 
 ### ⚠️ 注意事项
 - 如果价格不显示，请检查网络连接和防火墙是否允许 TrafficMonitor 联网  
-- 插件刷新间隔为 2 秒，免费 API 有频率限制，但此频率在安全范围内  
+- 插件刷新间隔为 1 秒，免费 API 有频率限制，但此频率在安全范围内  
 - 深色模式下红绿颜色会略微调柔，保证可读性
 
 ### 🙏 致谢
@@ -91,7 +91,7 @@ A plugin for [TrafficMonitor](https://github.com/zhongyang219/TrafficMonitor) th
 
 ### ⚠️ Notes
 - If prices do not appear, check your internet connection and firewall permissions for TrafficMonitor  
-- Refresh interval is 2 seconds; free APIs may have rate limits, but this frequency is generally safe  
+- Refresh interval is 1 seconds; free APIs may have rate limits, but this frequency is generally safe  
 - In dark mode, colors are slightly softened for better readability
 
 ### 🙏 Acknowledgement
