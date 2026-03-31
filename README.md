@@ -9,7 +9,7 @@
 <a id="中文"></a>
 ## 📈 黄金价格插件 for TrafficMonitor
 
-为 [TrafficMonitor](https://github.com/zhongyang219/TrafficMonitor) 开发的插件，在任务栏实时显示**伦敦金**和**浙商银行积存金**价格，涨跌自动变色（红涨绿跌），每 2 秒刷新一次。
+为 [TrafficMonitor](https://github.com/zhongyang219/TrafficMonitor) 开发的插件，在任务栏实时显示**伦敦金**和**浙商银行积存金**价格，涨跌自动变色（红涨绿跌），每 1 秒刷新一次。
 
 ### ✨ 功能特点
 - 伦敦金价格（美元/盎司） + 涨跌额 + 涨跌幅  
@@ -38,8 +38,8 @@
 - 生成的 `GoldPricePlugin.dll` 位于 `x64\Release\`
 
 ### 📊 数据来源
-- **伦敦金**：新浪财经 `https://hq.sinajs.cn/list=hf_XAU`  
-- **浙商金**：京东黄金 `https://api.jdjygold.com/gw2/generic/jrm/h5/m/stdLatestPrice?productSku=1961543816`
+- **伦敦金**：新浪财经
+- **浙商金**：京东黄金
 
 ### ⚠️ 注意事项
 - 如果价格不显示，请检查网络连接和防火墙是否允许 TrafficMonitor 联网  
@@ -86,8 +86,8 @@ A plugin for [TrafficMonitor](https://github.com/zhongyang219/TrafficMonitor) th
 - The resulting `GoldPricePlugin.dll` is in `x64\Release\`
 
 ### 📊 Data Sources
-- **London Gold**: Sina Finance `https://hq.sinajs.cn/list=hf_XAU`  
-- **ZheShang Gold**: JD.com Gold `https://api.jdjygold.com/gw2/generic/jrm/h5/m/stdLatestPrice?productSku=1961543816`
+- **London Gold**: Sina Finance
+- **ZheShang Gold**: JD.com Gold
 
 ### ⚠️ Notes
 - If prices do not appear, check your internet connection and firewall permissions for TrafficMonitor  
