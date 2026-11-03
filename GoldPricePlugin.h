@@ -4,7 +4,10 @@
 #include <windows.h>
 #include <string>
 #include <atomic>
-#include <thread>
+
+#ifdef GOLDPRICE_TESTING
+std::string GoldPriceTestHttpGet(bool london);
+#endif
 
 class CGoldPricePlugin : public ITMPlugin
 {
@@ -13,7 +16,7 @@ public:
 
     virtual int GetAPIVersion() const override { return 7; }
     virtual IPluginItem* GetItem(int index) override;
-    virtual void DataRequired() override {}
+    virtual void DataRequired() override;
     virtual OptionReturn ShowOptionsDialog(void* hParent) override { return OR_OPTION_NOT_PROVIDED; }
     virtual const wchar_t* GetInfo(PluginInfoIndex index) override;
     virtual void OnMonitorInfo(const MonitorInfo& monitor_info) override {}
@@ -26,24 +29,26 @@ private:
     CGoldPricePlugin(const CGoldPricePlugin&) = delete;
     void operator=(const CGoldPricePlugin&) = delete;
 
-    void WorkerThread();
-    void FetchPrices();
+    void QueueFetch(bool london);
+    void FetchPrice(bool london);
+    static void CALLBACK FetchCallback(PTP_CALLBACK_INSTANCE instance, void* context);
+    struct FetchWork { CGoldPricePlugin* plugin; bool london; HMODULE module; };
 
-    std::thread m_worker;
-    std::atomic<bool> m_stop;
+    std::atomic<bool> m_londonBusy{false};
+    std::atomic<bool> m_zheShangBusy{false};
+    ULONGLONG m_londonLastStart = 0;
+    ULONGLONG m_zheShangLastStart = 0;
 
-    // London gold data
     double m_londonPrice;
     double m_londonYesterday;
-    std::wstring m_londonChangeAmt;   // ¸ÄÎª¿í×Ö·û´®
-    std::wstring m_londonChangeRate;  // ¸ÄÎª¿í×Ö·û´®
+    std::wstring m_londonChangeAmt;
+    std::wstring m_londonChangeRate;
     bool m_londonUp;
 
-    // ZheShang gold data
     double m_zheShangPrice;
     double m_zheShangYesterday;
-    std::wstring m_zheShangChangeAmt; // ¸ÄÎª¿í×Ö·û´®
-    std::wstring m_zheShangChangeRate;// ¸ÄÎª¿í×Ö·û´®
+    std::wstring m_zheShangChangeAmt;
+    std::wstring m_zheShangChangeRate;
     bool m_zheShangUp;
 
     CRITICAL_SECTION m_cs;
@@ -56,7 +61,7 @@ private:
         virtual const wchar_t* GetItemId() const override { return L"LondonGold"; }
         virtual const wchar_t* GetItemLableText() const override { return L""; }
         virtual const wchar_t* GetItemValueText() const override { return L""; }
-        virtual const wchar_t* GetItemValueSampleText() const override { return L"8888.88 ¡ü888.88(8.88%)"; }
+        virtual const wchar_t* GetItemValueSampleText() const override { return L"8888.88 â†‘888.88(8.88%)"; }
         virtual bool IsCustomDraw() const override { return true; }
         virtual int GetItemWidthEx(void* hDC) const override;
         virtual void DrawItem(void* hDC, int x, int y, int w, int h, bool dark_mode) override;
@@ -72,7 +77,7 @@ private:
         virtual const wchar_t* GetItemId() const override { return L"ZheShangGold"; }
         virtual const wchar_t* GetItemLableText() const override { return L""; }
         virtual const wchar_t* GetItemValueText() const override { return L""; }
-        virtual const wchar_t* GetItemValueSampleText() const override { return L"888.88 ¡ý-1.94(-0.19%)"; }
+        virtual const wchar_t* GetItemValueSampleText() const override { return L"888.88 â†“-1.94(-0.19%)"; }
         virtual bool IsCustomDraw() const override { return true; }
         virtual int GetItemWidthEx(void* hDC) const override;
         virtual void DrawItem(void* hDC, int x, int y, int w, int h, bool dark_mode) override;
@@ -82,4 +87,8 @@ private:
 
     CLondonGoldItem* m_pLondonItem;
     CZheShangGoldItem* m_pZheShangItem;
+
+#ifdef GOLDPRICE_TESTING
+    friend struct GoldPricePluginTestAccess;
+#endif
 };
