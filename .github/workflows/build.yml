@@ -1,0 +1,66 @@
+name: Build DLL
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Semantic version calculated by update-version
+        required: true
+        type: string
+      build:
+        description: Build number calculated by update-version (YYYYMMDD.HHmm)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Release ${{ matrix.arch }}
+    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [x64, Win32]
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      PACKAGE_VERSION: ${{ inputs.version }}
+      PACKAGE_BUILD: ${{ inputs.build }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate package label
+        run: |
+          if ($env:PACKAGE_VERSION -notmatch '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$') { throw 'Invalid semantic version' }
+          if ($env:PACKAGE_BUILD -notmatch '^[0-9]{8}\.[0-9]{4}$') { throw 'Invalid build number' }
+      - name: Configure DLL
+        run: cmake -S . -B build/dll -G "Visual Studio 17 2022" -A ${{ matrix.arch }}
+      - name: Build DLL
+        run: cmake --build build/dll --config Release
+      - name: Configure tests
+        run: cmake -S tests -B build/tests -G "Visual Studio 17 2022" -A ${{ matrix.arch }}
+      - name: Build tests
+        run: cmake --build build/tests --config Release
+      - name: Test
+        run: ctest --test-dir build/tests -C Release --output-on-failure
+      - name: Package DLL
+        run: |
+          New-Item -ItemType Directory -Path package | Out-Null
+          Copy-Item build/dll/Release/GoldPricePlugin.dll, README.md, LICENSE -Destination package
+          Copy-Item third_party/nlohmann/LICENSE.MIT -Destination package/nlohmann-LICENSE.MIT
+          $dllHash = (Get-FileHash package/GoldPricePlugin.dll -Algorithm SHA256).Hash.ToLowerInvariant()
+          [ordered]@{
+            version = $env:PACKAGE_VERSION
+            build = $env:PACKAGE_BUILD
+            commit = $env:GITHUB_SHA
+            architecture = '${{ matrix.arch }}'
+            configuration = 'Release'
+            dllSha256 = $dllHash
+          } | ConvertTo-Json | Set-Content package/build-info.json -Encoding utf8
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GoldPricePlugin-${{ inputs.version }}-${{ inputs.build }}-${{ matrix.arch }}
+          path: package/*
+          if-no-files-found: error

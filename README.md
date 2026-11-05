@@ -37,6 +37,11 @@
 - 生成 → 生成解决方案  
 - 生成的 `GoldPricePlugin.dll` 位于 `x64\Release\`
 
+### ☁️ GitHub 编译
+在 **Actions → Build DLL → Run workflow** 中填写版本号工具计算的 `version` 和 `build`。工作流分别构建 x64、Win32 Release DLL，运行解析、独立请求和卸载测试，再上传对应的 Artifacts。
+
+下载与 TrafficMonitor 架构一致的产物，解压后使用其中的 `GoldPricePlugin.dll`；`build-info.json` 记录构建标签、提交和 DLL 的 SHA-256。构建标签不改写插件内部版本，当前插件管理界面仍显示 `0.0.1`。
+
 ### 📊 数据来源
 - **伦敦金**：京东金融黄金行情，品种 `WG-XAUUSD`（美元/盎司）
 - **浙商金**：京东黄金
@@ -87,6 +92,11 @@ A plugin for [TrafficMonitor](https://github.com/zhongyang219/TrafficMonitor) th
 - Open `GoldPricePlugin.sln`, set configuration to **Release**, platform to **x64** (or match your TrafficMonitor)  
 - Build → Build Solution  
 - The resulting `GoldPricePlugin.dll` is in `x64\Release\`
+
+### ☁️ GitHub Build
+Open **Actions → Build DLL → Run workflow** and enter the `version` and `build` calculated by update-version. The workflow builds and tests x64 and Win32 Release DLLs and uploads separate artifacts. Choose the architecture matching TrafficMonitor and extract `GoldPricePlugin.dll`.
+
+`build-info.json` records the package label, source commit and DLL SHA-256. Package labels do not change the plugin's internal version, which currently remains `0.0.1`.
 
 ### 📊 Data Sources
 - **London Gold**: JD Finance gold quotes, symbol `WG-XAUUSD` (USD/troy ounce)
